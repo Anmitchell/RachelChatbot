@@ -1,6 +1,9 @@
 import json
 import random
 
+# setting up promt engineering plus 
+# any converstion that has been made with AI
+
 # Get recent messages
 def get_recent_messages():
 
@@ -16,7 +19,7 @@ def get_recent_messages():
     messages = []
 
     # Add a random element
-    x = random.unform(0, 1)
+    x = random.uniform(0, 1)
     if x < 0.5:
         learn_instruction["content"] = learn_instruction["content"] + " Your response will include some dry humour."
     else:
@@ -43,3 +46,29 @@ def get_recent_messages():
         pass
 
     return messages
+
+
+# Store Messages
+def store_messages(request_message, response_message):
+
+    # Define the file name
+    file_name = "stored_data.json"
+
+    # Get recent messages
+    messages = get_recent_messages()[1:]
+
+    # Add messages to data
+    user_message = { "role": "user", "content": request_message}        
+    assistant_message = { "role": "user", "content": response_message}
+    messages.append(user_message)
+    messages.append(assistant_message)
+
+    # Save the updated file
+    with open(file_name, "w") as f:
+        json.dump(messages, f)
+
+# Reset messages
+def reset_messages():
+        
+    # Overwrite current file with nothing
+    open("stored_data.json", "w")

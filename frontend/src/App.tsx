@@ -1,8 +1,10 @@
+import Controller from './components/Controller'
+
 function App() {
   return (
     <>
       <div className='App'>
-        <div className='text-5xl bg-blue-700'>Hello</div>
+        <Controller />
       </div>
     </>
   )
