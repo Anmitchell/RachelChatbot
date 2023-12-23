@@ -2,8 +2,12 @@
 from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.responses import StreamingResponse # using to send audio file back
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles # using to server static files for production
+from fastapi.responses import HTMLResponse
+from fastapi import Depends
 from decouple import config # Allows access to environment variables in .env file
 import openai
+import uuid
 
 
 # Custom Function Imports
@@ -23,6 +27,9 @@ origins = [
     "http://localhost:3000"
 ]
 
+# Mount the static files route built by front-end tool
+app.mount("/static", StaticFiles(directory="../frontend/dist"), name="static")
+
 # CORS - Middleware
 app.add_middleware(
     CORSMiddleware,
@@ -32,6 +39,13 @@ app.add_middleware(
     allow_headers=["*"]
 ) 
 
+    # Serve main HTML file from frontend
+@app.get("/", response_class=HTMLResponse)
+async def serve_frontend():
+    with open("../frontend/dist/index.html") as f:
+        html_content = f.read()
+    return HTMLResponse(content=html_content)
+
 @app.get("/reset")
 async def reset_converstion():
     reset_messages()
@@ -40,9 +54,8 @@ async def reset_converstion():
 #
 @app.post("/post-audio/")
 async def post_audio(file: UploadFile = File(...)):
-
-    # # Get saved audio
-    # audio_input = open("voice.mp3", "rb") # read bytes for audio file
+    unique_filename = str(uuid.uuid4())
+    file_path = f"uploads/{unique_filename}.mp3"
 
     # Save file from frontend
     with open(file.filename, "wb") as buffer:
