@@ -24,7 +24,8 @@ origins = [
     "http://localhost:5174",
     "http://localhost:4173",
     "http://localhost:4174",
-    "http://localhost:3000"
+    "http://localhost:3000",
+    "http://localhost:3005"
 ]
 
 # Mount the static files route built by front-end tool
