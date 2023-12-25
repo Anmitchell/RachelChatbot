@@ -19,14 +19,14 @@ from functions.text_to_speech import convert_text_to_speech
 app = FastAPI()
 
 # CORS - Origins -> dictates what domain URL's are excepted in back-end
-origins = [
-    "http://localhost:5173",
-    "http://localhost:5174",
-    "http://localhost:4173",
-    "http://localhost:4174",
-    "http://localhost:3000",
-    "http://localhost:3005"
-]
+# origins = [
+#     "http://localhost:5173",
+#     "http://localhost:5174",
+#     "http://localhost:4173",
+#     "http://localhost:4174",
+#     "http://localhost:3000",
+#     "http://localhost:3005"
+# ]
 
 # Mount the static files route built by front-end tool
 app.mount("/static", StaticFiles(directory="../frontend/dist"), name="static")
@@ -34,7 +34,7 @@ app.mount("/static", StaticFiles(directory="../frontend/dist"), name="static")
 # CORS - Middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=["*"], # enable cors for all origins
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"]
