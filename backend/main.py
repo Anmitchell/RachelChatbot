@@ -6,6 +6,7 @@ from fastapi.staticfiles import StaticFiles # using to server static files for p
 from fastapi.responses import HTMLResponse
 from fastapi import Depends
 from decouple import config # Allows access to environment variables in .env file
+from pathlib import Path
 import openai
 import uuid
 
@@ -29,7 +30,7 @@ app = FastAPI()
 # ]
 
 # Mount the static files route built by front-end tool
-app.mount("/static", StaticFiles(directory="../frontend/dist"), name="static")
+app.mount("/static", StaticFiles(directory=Path("../frontend/dist"), html=True), name="static")
 
 # CORS - Middleware
 app.add_middleware(
@@ -95,5 +96,3 @@ async def post_audio(file: UploadFile = File(...)):
 
     # Return audio file
     return StreamingResponse(iterfile(), media_type="application/octet-stream")
-
-    # return "done"
