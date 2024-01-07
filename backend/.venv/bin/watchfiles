@@ -1,4 +1,4 @@
-#!/Users/avarymitchell/dev-projects/RachelChat/backend/.venv/bin/python3.12
+#!/Users/avarymitchell/dev-projects/RachelChatbot/backend/.venv/bin/python3.12
 # -*- coding: utf-8 -*-
 import re
 import sys

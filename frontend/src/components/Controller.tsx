@@ -32,7 +32,7 @@ function Controller() {
 
         // Send form data to API endpoint
         await axios
-          .post('https://chatbot.avarymitchell.me/post-audio', formData, {
+          .post('/post-audio', formData, {
             headers: { 'Content-Type': 'audio/mpeg' },
             responseType: 'arraybuffer',
           })

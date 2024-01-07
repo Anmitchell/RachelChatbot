@@ -3,10 +3,9 @@ from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.responses import StreamingResponse # using to send audio file back
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles # using to server static files for production
-from fastapi.responses import HTMLResponse
+from fastapi.responses import FileResponse
 from fastapi import Depends
 from decouple import config # Allows access to environment variables in .env file
-from pathlib import Path
 import openai
 import uuid
 
@@ -20,17 +19,17 @@ from functions.text_to_speech import convert_text_to_speech
 app = FastAPI()
 
 # CORS - Origins -> dictates what domain URL's are excepted in back-end
-# origins = [
-#     "http://localhost:5173",
-#     "http://localhost:5174",
-#     "http://localhost:4173",
-#     "http://localhost:4174",
-#     "http://localhost:3000",
-#     "http://localhost:3005"
-# ]
+origins = [
+    "http://localhost:5173",
+    "http://localhost:5174",
+    "http://localhost:4173",
+    "http://localhost:4174",
+    "http://localhost:3000",
+    "http://localhost:3005"
+]
 
 # Mount the static files route built by front-end tool
-app.mount("/static", StaticFiles(directory=Path("../frontend/dist"), html=True), name="static")
+app.mount("/static", StaticFiles(directory="../frontend/dist"), name="static")
 
 # CORS - Middleware
 app.add_middleware(
@@ -41,12 +40,11 @@ app.add_middleware(
     allow_headers=["*"]
 ) 
 
-    # Serve main HTML file from frontend
-@app.get("/", response_class=HTMLResponse)
-async def serve_frontend():
-    with open("../frontend/dist/index.html") as f:
-        html_content = f.read()
-    return HTMLResponse(content=html_content)
+# Example route to serve the index.html file
+@app.get("/")
+async def read_root():
+    # Assuming index.html is in the frontend directory
+    return FileResponse("../frontend/dist/index.html")
 
 @app.get("/reset")
 async def reset_converstion():

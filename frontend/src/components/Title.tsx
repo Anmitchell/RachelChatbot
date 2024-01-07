@@ -15,7 +15,7 @@ function Title({ setMessages }: Props) {
 
     // Make request to backend route to reset conversation
     await axios
-      .get('https://chatbot.avarymitchell.me/reset')
+      .get('/reset')
       .then((res) => {
         if (res.status == 200) {
           setMessages([])
